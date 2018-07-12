@@ -1,2 +1,2 @@
 # pus-fss-frontend
-Baseimage som server en statisk frontend bak innloging
+Baseimage som server en statisk frontend bak innlogging

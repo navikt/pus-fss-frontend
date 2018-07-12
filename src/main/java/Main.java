@@ -1,6 +1,6 @@
 
 import no.nav.apiapp.ApiApp;
-import no.nav.ApplicationConfig;
+import no.nav.fssfrontend.ApplicationConfig;
 
 public class Main {
 

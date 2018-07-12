@@ -1,4 +1,4 @@
-package no.nav;
+package no.nav.fssfrontend;
 
 import no.nav.apiapp.ApiApplication;
 import no.nav.apiapp.config.ApiAppConfigurator;
