@@ -12,7 +12,6 @@ import static no.nav.sbl.util.EnvironmentUtils.setProperty;
 
 public class MainTest {
 
-    private static final String TEST_PORT = "8965";
     private static final String APPLICATION_NAME = "fssfrontend";
 
     private static void setupSecurity(){
@@ -32,7 +31,7 @@ public class MainTest {
         setProperty(SecurityConstants.SYSTEMUSER_USERNAME, srvveilarbdemo.getUsername(), PUBLIC);
         setProperty(SecurityConstants.SYSTEMUSER_PASSWORD, srvveilarbdemo.getPassword(), SECRET);
 
-        String loginUrl = FasitUtils.getBaseUrl("veilarblogin.redirect-url", FasitUtils.Zone.FSS);
+        String loginUrl = FasitUtils.getRestService("veilarblogin.redirect-url", FasitUtils.getDefaultEnvironment()).getUrl();
         setProperty(Constants.OIDC_REDIRECT_URL_PROPERTY_NAME, loginUrl);
     }
 
@@ -40,7 +39,7 @@ public class MainTest {
         ApiAppTest.setupTestContext(ApiAppTest.Config.builder().applicationName(APPLICATION_NAME).build());
         setProperty(EnvironmentUtils.APP_NAME_PROPERTY_NAME, APPLICATION_NAME, PUBLIC);
         setupSecurity();
-        Main.main(TEST_PORT);
+        Main.main("8965", "8966");
     }
 
 }
