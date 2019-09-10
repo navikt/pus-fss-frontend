@@ -19,12 +19,7 @@ import static no.nav.sbl.util.EnvironmentUtils.requireApplicationName;
 @Import({
         FeatureResource.class
 })
-public class ApplicationConfig implements ApiApplication.NaisApiApplication {
-
-    @Override
-    public boolean brukSTSHelsesjekk() {
-        return false;
-    }
+public class ApplicationConfig implements ApiApplication {
 
     @Override
     public void startup(ServletContext servletContext) {
