@@ -1,0 +1,13 @@
+version: 2.1
+orbs:
+  pus: navikt/pus-orb@0.0.32
+
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - pus/bygg-og-push-til-docker-hub:
+          context: pus
+          filters:
+            branches:
+              only: master
