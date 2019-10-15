@@ -1,12 +1,13 @@
 package no.nav.fssfrontend;
 
-import lombok.extern.slf4j.Slf4j;
 import no.finn.unleash.UnleashContext;
 import no.nav.sbl.featuretoggle.unleash.UnleashService;
 import org.jose4j.jwt.MalformedClaimException;
 import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -31,8 +32,9 @@ import static no.nav.sbl.util.StringUtils.of;
  */
 @Path("/feature")
 @Component
-@Slf4j
 public class FeatureResource {
+
+    private static final Logger log = LoggerFactory.getLogger(FeatureResource.class);
 
     private static final String UNLEASH_SESSION_ID_COOKIE_NAME = "UNLEASH_SESSION_ID";
     private static final JwtConsumer JWT_PARSER = new JwtConsumerBuilder()
