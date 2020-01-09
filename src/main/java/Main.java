@@ -30,7 +30,7 @@ public class Main {
 
     private static void loadSecret(String secretName, Consumer<NaisUtils.Credentials> consumer) {
         try {
-            consumer.accept(NaisUtils.getCredentials("service_user"));
+            consumer.accept(NaisUtils.getCredentials(secretName));
         } catch (Exception e) {
             log.warn(String.format("Kunne ikke laste inn secret: %s", secretName), e);
         }
