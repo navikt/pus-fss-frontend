@@ -49,5 +49,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo ${GITHUB_TOKEN} | docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} --password-stdin
-          docker build -t ${IMAGE}:${IMAGE_TAG} .
-          docker push ${IMAGE}:${IMAGE_TAG}
+          docker build -t ${IMAGE}:latest -t ${IMAGE}:${IMAGE_TAG} .
+          docker push ${IMAGE}
