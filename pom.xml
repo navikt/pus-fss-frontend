@@ -7,7 +7,7 @@
     <parent>
         <groupId>no.nav.common</groupId>
         <artifactId>mor-pom</artifactId>
-        <version>1.2020.01.08-12.57-62d0c889ddb5</version>
+        <version>1.2020.02.14-09.24-d69ebf28efd0</version>
     </parent>
 
     <groupId>no.nav.pus</groupId>
@@ -39,7 +39,7 @@
         </dependency>
         <dependency>
             <groupId>no.nav.common</groupId>
-            <artifactId>oidc-security</artifactId>
+            <artifactId>oidc</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.common</groupId>
@@ -76,10 +76,6 @@
         <dependency>
             <groupId>no.finn.unleash</groupId>
             <artifactId>unleash-client-java</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.bitbucket.b_c</groupId>
-            <artifactId>jose4j</artifactId>
         </dependency>
 
         <!-- test -->

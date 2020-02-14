@@ -15,7 +15,7 @@ import static no.nav.sbl.util.EnvironmentUtils.Type.SECRET;
 public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
-    public static void main(String... args) throws Exception {
+    public static void main(String... args) {
         loadSecret("service_user", (serviceUser) -> {
             EnvironmentUtils.setProperty(StsSecurityConstants.SYSTEMUSER_USERNAME, serviceUser.username, PUBLIC);
             EnvironmentUtils.setProperty(StsSecurityConstants.SYSTEMUSER_PASSWORD, serviceUser.password, SECRET);
