@@ -5,4 +5,4 @@ WORKDIR /source
 RUN mvn install -DskipTests
 
 FROM navikt/pus-nais-java-app
-COPY --from=maven-builder /source/target/fss-frontend /app
+COPY --from=maven-builder /source/target/pus-fss-frontend /app
