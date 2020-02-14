@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>no.nav.pus</groupId>
-    <artifactId>fss-frontend</artifactId>
+    <artifactId>pus-fss-frontend</artifactId>
     <version>1</version>
     <packaging>war</packaging>
 
@@ -90,7 +90,7 @@
     </dependencies>
 
     <build>
-        <finalName>fss-frontend</finalName>
+        <finalName>pus-fss-frontend</finalName>
     </build>
 
 </project>
