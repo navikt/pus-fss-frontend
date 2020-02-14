@@ -1,4 +1,4 @@
-name: Test, build, push and deploy
+name: Test, build and push
 on: push
 env:
   IMAGE_TAG: ${{ github.sha }}
@@ -48,6 +48,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          docker build -t ${IMAGE}:${IMAGE_TAG} .
           echo ${GITHUB_TOKEN} | docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} --password-stdin
+          docker build -t ${IMAGE}:${IMAGE_TAG} .
           docker push ${IMAGE}:${IMAGE_TAG}
