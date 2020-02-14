@@ -16,20 +16,20 @@ import static no.nav.sbl.util.EnvironmentUtils.getOptionalProperty;
 import static no.nav.sbl.util.EnvironmentUtils.requireApplicationName;
 
 @Configuration
-@Import({
-        FeatureResource.class
-})
+@Import({ FeatureResource.class, ApplicationServlet.class })
 public class ApplicationConfig implements ApiApplication {
+
+    public static final String OPENAM_DISCOVERY_URL_PROPERTY = "OPENAM_DISCOVERY_URL";
+    public static final String OPENAM_CLIENT_ID_PROPERTY = "VEILARBLOGIN_OPENAM_CLIENT_ID";
+    public static final String OPENAM_LOGIN_URL_PROPERTY = "VEILARBLOGIN_OPENAM_LOGIN_URL";
 
     @Override
     public void startup(ServletContext servletContext) {
-        leggTilServlet(servletContext, ApplicationServlet.class, "/*");
+        leggTilServlet(servletContext, new ApplicationServlet(), "/*");
     }
 
     @Override
-    public void configure(ApiAppConfigurator apiAppConfigurator) {
-        apiAppConfigurator.issoLogin();
-    }
+    public void configure(ApiAppConfigurator apiAppConfigurator) {}
 
     @Bean
     public UnleashService unleashService() {

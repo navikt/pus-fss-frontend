@@ -1,11 +1,8 @@
 package no.nav.fssfrontend;
 
+import com.nimbusds.jwt.JWTParser;
 import no.finn.unleash.UnleashContext;
 import no.nav.sbl.featuretoggle.unleash.UnleashService;
-import org.jose4j.jwt.MalformedClaimException;
-import org.jose4j.jwt.consumer.InvalidJwtException;
-import org.jose4j.jwt.consumer.JwtConsumer;
-import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -19,6 +16,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -37,10 +35,6 @@ public class FeatureResource {
     private static final Logger log = LoggerFactory.getLogger(FeatureResource.class);
 
     private static final String UNLEASH_SESSION_ID_COOKIE_NAME = "UNLEASH_SESSION_ID";
-    private static final JwtConsumer JWT_PARSER = new JwtConsumerBuilder()
-            .setSkipAllValidators()
-            .setSkipSignatureVerification()
-            .build();
 
     private final UnleashService unleashService;
 
@@ -67,8 +61,8 @@ public class FeatureResource {
 
     private static String getSubject(String jwt) {
         try {
-            return JWT_PARSER.processToClaims(jwt).getSubject();
-        } catch (MalformedClaimException | InvalidJwtException e) {
+            return JWTParser.parse(jwt).getJWTClaimsSet().getSubject();
+        } catch (ParseException e) {
             log.warn(e.getMessage(), e);
             return null;
         }
