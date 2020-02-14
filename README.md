@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/navikt/pus-fss-frontend.svg?style=svg)](https://circleci.com/gh/navikt/pus-fss-frontend)
+![](https://github.com/navikt/pus-fss-frontend/workflows/Test,%20build%20and%20push/badge.svg)
 
 # pus-fss-frontend
 Baseimage som server en statisk frontend bak innlogging
