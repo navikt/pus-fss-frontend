@@ -5,92 +5,114 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>no.nav.common</groupId>
-        <artifactId>mor-pom</artifactId>
-        <version>1.2020.02.14-09.24-d69ebf28efd0</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.0.RELEASE</version>
+        <relativePath/>
     </parent>
 
-    <groupId>no.nav.pus</groupId>
+    <groupId>no.nav</groupId>
     <artifactId>pus-fss-frontend</artifactId>
     <version>1</version>
-    <packaging>war</packaging>
+    <name>pus-fss-frontend</name>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>no.nav.common</groupId>
-                <artifactId>bom</artifactId>
-                <version>${parent.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+    <properties>
+        <java.version>11</java.version>
+        <common.version>2.2020.08.07_16.18-e6be6d6a09e6</common.version>
+    </properties>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+        <finalName>pus-fss-frontend</finalName>
+    </build>
 
     <dependencies>
         <dependency>
-            <groupId>no.nav.common</groupId>
-            <artifactId>api-app</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.common</groupId>
-            <artifactId>nais</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!--  Overskriv gammel avhengighet fra nimbus -->
+        <dependency>
+            <groupId>net.minidev</groupId>
+            <artifactId>json-smart</artifactId>
+            <version>2.3</version>
+        </dependency>
+
+        <!-- Common Dependencies -->
+        <dependency>
             <groupId>no.nav.common</groupId>
-            <artifactId>oidc</artifactId>
+            <artifactId>feature-toggle</artifactId>
+            <version>${common.version}</version>
         </dependency>
         <dependency>
             <groupId>no.nav.common</groupId>
             <artifactId>util</artifactId>
+            <version>${common.version}</version>
         </dependency>
+
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
+            <groupId>no.nav.common</groupId>
+            <artifactId>auth</artifactId>
+            <version>${common.version}</version>
         </dependency>
         <dependency>
             <groupId>no.nav.common</groupId>
-            <artifactId>feature-toggle</artifactId>
+            <artifactId>log</artifactId>
+            <version>${common.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.hk2.external</groupId>
-            <artifactId>javax.inject</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.finn.unleash</groupId>
-            <artifactId>unleash-client-java</artifactId>
+            <groupId>no.nav.common</groupId>
+            <artifactId>health</artifactId>
+            <version>${common.version}</version>
         </dependency>
 
         <!-- test -->
         <dependency>
-            <groupId>no.nav.common</groupId>
-            <artifactId>fasit</artifactId>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>no.nav.common</groupId>
-            <artifactId>test-config</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <finalName>pus-fss-frontend</finalName>
-    </build>
 
 </project>
