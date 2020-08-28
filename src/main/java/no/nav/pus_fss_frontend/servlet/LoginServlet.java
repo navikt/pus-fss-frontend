@@ -5,6 +5,7 @@ import com.nimbusds.jwt.JWTParser;
 import no.nav.common.auth.oidc.OidcTokenValidator;
 import no.nav.common.auth.utils.CookieTokenFinder;
 import no.nav.common.auth.utils.TokenFinder;
+import no.nav.common.auth.utils.TokenUtils;
 import no.nav.common.featuretoggle.UnleashService;
 import no.nav.pus_fss_frontend.config.EnvironmentProperties;
 import no.nav.pus_fss_frontend.utils.ToggleUtils;
@@ -23,6 +24,8 @@ import static no.nav.common.auth.Constants.AZURE_AD_ID_TOKEN_COOKIE_NAME;
 import static no.nav.common.auth.Constants.OPEN_AM_ID_TOKEN_COOKIE_NAME;
 
 public class LoginServlet extends HttpServlet {
+
+    private final static long TEN_MINUTES = 10 * 60 * 1000;
 
     private final UnleashService unleashService;
 
@@ -58,13 +61,8 @@ public class LoginServlet extends HttpServlet {
         Optional<String> maybeToken = openAmTokenFinder.findToken(request)
                 .or(() -> azureAdTokenFinder.findToken(request));
 
-        if (maybeToken.isEmpty()) {
-            redirectToLogin(response, currentLocation);
-            return;
-        }
-
         try {
-            JWT jwtToken = JWTParser.parse(maybeToken.get());
+            JWT jwtToken = JWTParser.parse(maybeToken.orElseThrow());
 
             List<String> tokenAudiences = jwtToken.getJWTClaimsSet().getAudience();
 
@@ -75,6 +73,11 @@ public class LoginServlet extends HttpServlet {
             } else {
                 azureAdTokenValidator.validate(jwtToken);
             }
+
+            if (TokenUtils.expiresWithin(jwtToken, TEN_MINUTES)) {
+               throw new RuntimeException("Token expires soon, redirect to login");
+            }
+
         } catch (Exception e) {
             redirectToLogin(response, currentLocation);
             return;
