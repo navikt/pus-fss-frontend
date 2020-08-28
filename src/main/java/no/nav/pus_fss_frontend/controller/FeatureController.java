@@ -1,61 +1,71 @@
-package no.nav.fssfrontend;
+package no.nav.pus_fss_frontend.controller;
 
 import com.nimbusds.jwt.JWTParser;
+import lombok.extern.slf4j.Slf4j;
 import no.finn.unleash.UnleashContext;
-import no.nav.sbl.featuretoggle.unleash.UnleashService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import no.nav.common.auth.utils.CookieUtils;
+import no.nav.common.featuretoggle.UnleashService;
+import no.nav.pus_fss_frontend.utils.ToggleUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.CookieParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static no.nav.brukerdialog.security.Constants.ID_TOKEN_COOKIE_NAME;
-import static no.nav.sbl.util.StringUtils.of;
+import static no.nav.common.auth.Constants.AZURE_AD_ID_TOKEN_COOKIE_NAME;
+import static no.nav.common.auth.Constants.OPEN_AM_ID_TOKEN_COOKIE_NAME;
 
 /**
  * Implements equal api as https://github.com/navikt/pus-decorator/blob/master/src/main/java/no/nav/pus/decorator/feature/FeatureResource.java
  */
-@Path("/feature")
-@Component
-public class FeatureResource {
-
-    private static final Logger log = LoggerFactory.getLogger(FeatureResource.class);
+@Slf4j
+@RestController
+@RequestMapping("/api/feature")
+public class FeatureController {
 
     private static final String UNLEASH_SESSION_ID_COOKIE_NAME = "UNLEASH_SESSION_ID";
 
     private final UnleashService unleashService;
 
-    @Inject
-    public FeatureResource(UnleashService unleashService) {
+    @Autowired
+    public FeatureController(UnleashService unleashService) {
         this.unleashService = unleashService;
     }
 
-    @GET
+    @GetMapping
     public Map<String, Boolean> getFeatures(
-            @QueryParam("feature") List<String> features,
-            @CookieParam(UNLEASH_SESSION_ID_COOKIE_NAME) String sessionId,
-            @CookieParam(ID_TOKEN_COOKIE_NAME) String issoOidcToken,
-            @Context HttpServletRequest request,
-            @Context HttpServletResponse response
+            @RequestParam("feature") List<String> features,
+            HttpServletRequest request,
+            HttpServletResponse response
     ) {
+
+        String tokenCookieName = ToggleUtils.skalBrukeAzureAd(unleashService)
+                ? AZURE_AD_ID_TOKEN_COOKIE_NAME
+                : OPEN_AM_ID_TOKEN_COOKIE_NAME;
+
+        String oidcToken = CookieUtils.getCookie(tokenCookieName, request)
+                .map((cookie) -> getSubject(cookie.getValue()))
+                .orElse(null);
+
+        String sessionId = CookieUtils.getCookie(UNLEASH_SESSION_ID_COOKIE_NAME, request)
+                .map(Cookie::getValue)
+                .orElseGet(() -> generateSessionId(response));
+
         UnleashContext unleashContext = UnleashContext.builder()
-                .userId(of(issoOidcToken).map(FeatureResource::getSubject).orElse(null))
-                .sessionId(of(sessionId).orElseGet(() -> generateSessionId(response)))
+                .userId(oidcToken)
+                .sessionId(sessionId)
                 .remoteAddress(request.getRemoteAddr())
                 .build();
+
         return features.stream().collect(Collectors.toMap(e -> e, e -> unleashService.isEnabled(e, unleashContext)));
     }
 

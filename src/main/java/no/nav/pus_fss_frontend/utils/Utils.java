@@ -1,8 +1,8 @@
-package no.nav.fssfrontend;
+package no.nav.pus_fss_frontend.utils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class Utils {
 
@@ -18,11 +18,7 @@ public class Utils {
 	}
 
 	public static String urlEncode(String url) {
-		try {
-			return URLEncoder.encode(url, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			throw new IllegalArgumentException("Could not URLencode: " + url);
-		}
+		return URLEncoder.encode(url, StandardCharsets.UTF_8);
 	}
 
 }
