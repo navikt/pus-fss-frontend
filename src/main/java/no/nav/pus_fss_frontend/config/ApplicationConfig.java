@@ -4,9 +4,9 @@ import no.nav.common.featuretoggle.UnleashService;
 import no.nav.common.featuretoggle.UnleashServiceConfig;
 import no.nav.common.health.selftest.SelfTestChecks;
 import no.nav.common.health.selftest.SelfTestMeterBinder;
-import no.nav.pus_fss_frontend.servlet.LoginServlet;
+import no.nav.pus_fss_frontend.filter.LoginRedirectFilter;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,10 +20,12 @@ import static no.nav.common.utils.EnvironmentUtils.requireApplicationName;
 public class ApplicationConfig {
 
     @Bean
-    public ServletRegistrationBean<LoginServlet> authenticationServletServletRegistrationBean(
-            UnleashService unleashService, EnvironmentProperties environmentProperties
-    ) {
-        return new ServletRegistrationBean<>(new LoginServlet(unleashService, environmentProperties),"/*");
+    public FilterRegistrationBean loginRedirectFilter(UnleashService unleashService, EnvironmentProperties environmentProperties) {
+        FilterRegistrationBean<LoginRedirectFilter> registration = new FilterRegistrationBean<>();
+        registration.setFilter(new LoginRedirectFilter(unleashService, environmentProperties));
+        registration.setOrder(1);
+        registration.addUrlPatterns("/*");
+        return registration;
     }
 
     @Bean

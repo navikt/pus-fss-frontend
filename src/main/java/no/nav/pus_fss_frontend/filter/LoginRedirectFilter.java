@@ -1,4 +1,4 @@
-package no.nav.pus_fss_frontend.servlet;
+package no.nav.pus_fss_frontend.filter;
 
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTParser;
@@ -11,9 +11,7 @@ import no.nav.pus_fss_frontend.config.EnvironmentProperties;
 import no.nav.pus_fss_frontend.utils.ToggleUtils;
 import no.nav.pus_fss_frontend.utils.Utils;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -23,7 +21,7 @@ import java.util.Optional;
 import static no.nav.common.auth.Constants.AZURE_AD_ID_TOKEN_COOKIE_NAME;
 import static no.nav.common.auth.Constants.OPEN_AM_ID_TOKEN_COOKIE_NAME;
 
-public class LoginServlet extends HttpServlet {
+public class LoginRedirectFilter implements Filter {
 
     private final static long TEN_MINUTES = 10 * 60 * 1000;
 
@@ -39,7 +37,7 @@ public class LoginServlet extends HttpServlet {
 
     private final OidcTokenValidator azureAdTokenValidator;
 
-    public LoginServlet(UnleashService unleashService, EnvironmentProperties environmentProperties) {
+    public LoginRedirectFilter(UnleashService unleashService, EnvironmentProperties environmentProperties) {
         this.unleashService = unleashService;
         this.environmentProperties = environmentProperties;
 
@@ -56,10 +54,13 @@ public class LoginServlet extends HttpServlet {
     }
 
     @Override
-    protected final void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException, ServletException {
-        String currentLocation = Utils.urlEncode(Utils.getFullURL(request));
-        Optional<String> maybeToken = openAmTokenFinder.findToken(request)
-                .or(() -> azureAdTokenFinder.findToken(request));
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+
+        String currentLocation = Utils.urlEncode(Utils.getFullURL(httpServletRequest));
+        Optional<String> maybeToken = openAmTokenFinder.findToken(httpServletRequest)
+                .or(() -> azureAdTokenFinder.findToken(httpServletRequest));
 
         try {
             JWT jwtToken = JWTParser.parse(maybeToken.orElseThrow());
@@ -75,22 +76,12 @@ public class LoginServlet extends HttpServlet {
             }
 
             if (TokenUtils.expiresWithin(jwtToken, TEN_MINUTES)) {
-               throw new RuntimeException("Token expires soon, redirect to login");
+                throw new RuntimeException("Token expires soon, redirect to login");
             }
 
+            chain.doFilter(request, response);
         } catch (Exception e) {
-            redirectToLogin(response, currentLocation);
-            return;
-        }
-
-        RequestDispatcher dispatcher = getServletContext().getNamedDispatcher("default");
-        String fileRequestPattern = "^(.+\\..{1,4})$";
-
-        if (!request.getRequestURI().matches(fileRequestPattern)) {
-            RequestDispatcher index = getServletContext().getRequestDispatcher("/index.html");
-            index.forward(request, response);
-        } else {
-            dispatcher.forward(request, response);
+            redirectToLogin(httpServletResponse, currentLocation);
         }
     }
 
