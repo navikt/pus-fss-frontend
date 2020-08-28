@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import no.finn.unleash.UnleashContext;
 import no.nav.common.auth.utils.CookieUtils;
 import no.nav.common.featuretoggle.UnleashService;
+import no.nav.pus_fss_frontend.utils.ToggleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,6 @@ import java.util.stream.Collectors;
 
 import static no.nav.common.auth.Constants.AZURE_AD_ID_TOKEN_COOKIE_NAME;
 import static no.nav.common.auth.Constants.OPEN_AM_ID_TOKEN_COOKIE_NAME;
-import static no.nav.pus_fss_frontend.config.ApplicationConfig.USE_AZURE_AD_TOGGLE;
 
 /**
  * Implements equal api as https://github.com/navikt/pus-decorator/blob/master/src/main/java/no/nav/pus/decorator/feature/FeatureResource.java
@@ -48,7 +48,7 @@ public class FeatureController {
             HttpServletResponse response
     ) {
 
-        String tokenCookieName = unleashService.isEnabled(USE_AZURE_AD_TOGGLE)
+        String tokenCookieName = ToggleUtils.skalBrukeAzureAd(unleashService)
                 ? AZURE_AD_ID_TOKEN_COOKIE_NAME
                 : OPEN_AM_ID_TOKEN_COOKIE_NAME;
 

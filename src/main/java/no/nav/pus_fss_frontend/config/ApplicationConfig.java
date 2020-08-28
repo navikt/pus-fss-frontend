@@ -15,8 +15,6 @@ import static no.nav.common.utils.EnvironmentUtils.requireApplicationName;
 @EnableConfigurationProperties({EnvironmentProperties.class})
 public class ApplicationConfig {
 
-    public static final String USE_AZURE_AD_TOGGLE = "pto.use-azure-ad";
-
     @Bean
     public ServletRegistrationBean<LoginServlet> authenticationServletServletRegistrationBean(
             UnleashService unleashService, EnvironmentProperties environmentProperties

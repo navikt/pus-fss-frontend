@@ -7,6 +7,7 @@ import no.nav.common.auth.utils.CookieTokenFinder;
 import no.nav.common.auth.utils.TokenFinder;
 import no.nav.common.featuretoggle.UnleashService;
 import no.nav.pus_fss_frontend.config.EnvironmentProperties;
+import no.nav.pus_fss_frontend.utils.ToggleUtils;
 import no.nav.pus_fss_frontend.utils.Utils;
 
 import javax.servlet.RequestDispatcher;
@@ -20,7 +21,6 @@ import java.util.Optional;
 
 import static no.nav.common.auth.Constants.AZURE_AD_ID_TOKEN_COOKIE_NAME;
 import static no.nav.common.auth.Constants.OPEN_AM_ID_TOKEN_COOKIE_NAME;
-import static no.nav.pus_fss_frontend.config.ApplicationConfig.USE_AZURE_AD_TOGGLE;
 
 public class LoginServlet extends HttpServlet {
 
@@ -94,7 +94,7 @@ public class LoginServlet extends HttpServlet {
     private void redirectToLogin(HttpServletResponse response, String encodedReturnUrl) throws IOException {
         String loginUrl;
 
-        if (unleashService.isEnabled(USE_AZURE_AD_TOGGLE)) {
+        if (ToggleUtils.skalBrukeAzureAd(unleashService)) {
             loginUrl = environmentProperties.getAadVeilarbloginLoginUrl() + "?returnUrl=" + encodedReturnUrl;
         } else {
             loginUrl = environmentProperties.getOpenAmVeilarbloginLoginUrl() + "?url=" + encodedReturnUrl;
