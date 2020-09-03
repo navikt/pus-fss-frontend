@@ -21,4 +21,9 @@ public class Utils {
 		return URLEncoder.encode(url, StandardCharsets.UTF_8);
 	}
 
+	public static String ensureStringIsPrefixed(String string, String prefix) {
+		if (string.startsWith(prefix)) return string;
+		return String.format("%s%s", prefix, string);
+	}
+
 }

@@ -25,4 +25,8 @@ public class EnvironmentProperties {
 
     private String unleashApiUrl;
 
+    private String naisAppName;
+
+    private String contextPath;
+
 }
