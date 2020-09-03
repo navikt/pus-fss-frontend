@@ -58,6 +58,12 @@ public class LoginRedirectFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
+        // We dont need login for /internal requests
+        if (isInternalRequest(httpServletRequest)) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         String currentLocation = Utils.urlEncode(Utils.getFullURL(httpServletRequest));
         Optional<String> maybeToken = openAmTokenFinder.findToken(httpServletRequest)
                 .or(() -> azureAdTokenFinder.findToken(httpServletRequest));
@@ -83,6 +89,10 @@ public class LoginRedirectFilter implements Filter {
         } catch (Exception e) {
             redirectToLogin(httpServletResponse, currentLocation);
         }
+    }
+
+    private boolean isInternalRequest(HttpServletRequest request) {
+        return request.getRequestURI().contains("/internal");
     }
 
     private void redirectToLogin(HttpServletResponse response, String encodedReturnUrl) throws IOException {
