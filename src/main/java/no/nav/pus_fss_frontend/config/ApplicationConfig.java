@@ -4,6 +4,7 @@ import no.nav.common.featuretoggle.UnleashService;
 import no.nav.common.featuretoggle.UnleashServiceConfig;
 import no.nav.common.health.selftest.SelfTestChecks;
 import no.nav.common.health.selftest.SelfTestMeterBinder;
+import no.nav.common.rest.filter.SetStandardHttpHeadersFilter;
 import no.nav.pus_fss_frontend.filter.LoginRedirectFilter;
 import no.nav.pus_fss_frontend.utils.Utils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -24,10 +25,19 @@ import static no.nav.common.utils.EnvironmentUtils.requireApplicationName;
 public class ApplicationConfig {
 
     @Bean
-    public FilterRegistrationBean loginRedirectFilter(UnleashService unleashService, EnvironmentProperties environmentProperties) {
+    public FilterRegistrationBean<SetStandardHttpHeadersFilter> setStandardHttpHeadersFilter() {
+        FilterRegistrationBean<SetStandardHttpHeadersFilter> registration = new FilterRegistrationBean<>();
+        registration.setFilter(new SetStandardHttpHeadersFilter());
+        registration.setOrder(1);;
+        registration.addUrlPatterns("/*");
+        return registration;
+    }
+
+    @Bean
+    public FilterRegistrationBean<LoginRedirectFilter> loginRedirectFilter(UnleashService unleashService, EnvironmentProperties environmentProperties) {
         FilterRegistrationBean<LoginRedirectFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(new LoginRedirectFilter(unleashService, environmentProperties));
-        registration.setOrder(1);
+        registration.setOrder(2);
         registration.addUrlPatterns("/*");
         return registration;
     }
