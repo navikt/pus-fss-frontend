@@ -28,7 +28,7 @@ public class ApplicationConfig {
     public FilterRegistrationBean<SetStandardHttpHeadersFilter> setStandardHttpHeadersFilter() {
         FilterRegistrationBean<SetStandardHttpHeadersFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(new SetStandardHttpHeadersFilter());
-        registration.setOrder(1);;
+        registration.setOrder(1);
         registration.addUrlPatterns("/*");
         return registration;
     }
