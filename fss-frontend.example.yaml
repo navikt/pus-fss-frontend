@@ -3,7 +3,7 @@ csp:
   # Default: NONE Values: ENFORCE, REPORT_ONLY or NONE
   mode: ENFORCE
   # Default: 'self'
-  defaultSrc: "'self' url.no url2.no"
+  defaultSrc: "'self' url-{{ENVIRONMENT_VARIABLE}}.no url2.no"
 
   # Default: null
   # Browser will use `defaultSrc` as fallback for all other resource types when they don't have policies of their own
