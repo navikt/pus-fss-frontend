@@ -1,0 +1,18 @@
+# CSP rules
+csp:
+  # Default: NONE Values: ENFORCE, REPORT_ONLY or NONE
+  mode: ENFORCE
+  # Default: 'self'
+  defaultSrc: "'self' url.no url2.no"
+
+  # Default: null
+  # Browser will use `defaultSrc` as fallback for all other resource types when they don't have policies of their own
+  scriptSrc: "'self' 'unsafe-inline' url.no"
+  imgSrc: "'self' 'unsafe-inline' url.no"
+  styleSrc: "'self' 'unsafe-inline' url.no"
+  fontSrc: "'self' 'unsafe-inline' url.no"
+  connectSrc: "'self' 'unsafe-inline' url.no"
+  frameSrc: "'self' 'unsafe-inline' url.no"
+
+  # Default: /frontendlogger/api/warn
+  reportUri: "/frontendlogger/api/warn"
