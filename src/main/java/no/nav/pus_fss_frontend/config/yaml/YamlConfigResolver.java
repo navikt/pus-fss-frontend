@@ -23,7 +23,7 @@ public class YamlConfigResolver {
 
     @SneakyThrows
     private static YamlConfig doResolveConfig() {
-        String configurationLocation = EnvironmentUtils.getOptionalProperty(CONFIGURATION_LOCATION_PROPERTY).orElse("/decorator.yaml");
+        String configurationLocation = EnvironmentUtils.getOptionalProperty(CONFIGURATION_LOCATION_PROPERTY).orElse("/config.yaml");
         File file = new File(configurationLocation);
         if (file.exists()) {
             log.info("Reading configuration file at: {}", configurationLocation);
