@@ -84,7 +84,11 @@
             <artifactId>util</artifactId>
             <version>${common.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>no.nav.common</groupId>
+            <artifactId>yaml</artifactId>
+            <version>${common.version}</version>
+        </dependency>
         <dependency>
             <groupId>no.nav.common</groupId>
             <artifactId>auth</artifactId>
@@ -99,6 +103,12 @@
             <groupId>no.nav.common</groupId>
             <artifactId>health</artifactId>
             <version>${common.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.common</groupId>
+            <artifactId>test</artifactId>
+            <version>${common.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- test -->

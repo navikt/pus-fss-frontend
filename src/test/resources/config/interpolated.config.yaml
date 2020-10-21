@@ -1,0 +1,4 @@
+# CSP rules
+csp:
+  mode: ENFORCE
+  scriptSrc: "'self' app.url.no app-{{ENVIRONMENT}}.url.no"

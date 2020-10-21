@@ -1,0 +1,11 @@
+---
+csp:
+  mode: "NONE"
+  defaultSrc: "'self'"
+  scriptSrc: null
+  imgSrc: null
+  styleSrc: null
+  fontSrc: null
+  connectSrc: null
+  frameSrc: null
+  reportUri: "/frontendlogger/api/warn"

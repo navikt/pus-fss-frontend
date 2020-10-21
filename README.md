@@ -26,3 +26,20 @@ liveness: {APP_CONTEXT_PATH}/internal/isAlive
 readiness: {APP_CONTEXT_PATH}/internal/isReady 
 prometheus: {APP_CONTEXT_PATH}/internal/prometheus
 ```  
+
+## Konfigurasjon
+
+pus-fss-frontend sjekker om det finnes en `/config.yaml` så sant ikke noe annet er spesifisert 
+via miljøvariablen `CONFIGURATION_LOCATION`. 
+Hvis den ikke finner en konfigurasjonsfil eller noen av feltene er udefinerte, så vil pus-fss-frontend bruke en predefinert konfigurasjon.   
+Anbefalingen er derfor å bruke minimalistisk konfigurasjon.
+
+pus-fss-frontend er satt opp med interpolasjon av miljøvariabler, via `{{ ENV_VAR }}` syntaksen. 
+Dette gjøres av applikasjoner, og krever derfor at miljøvariablene er tilgjengelig ved kjøretid.
+
+- [Komplett eksempel på konfig kan ses her](https://github.com/navikt/pus-fss-frontend/blob/master/fss-frontend.example.yaml).
+- [Minimalt eksempel som skrur på CSP](https://github.com/navikt/pus-fss-frontend/blob/master/fss-frontend-minimal.example.yaml)
+
+
+For å bruke via docker trenger man bare å legge til følgende; 
+```ADD config.yaml /config.yaml```

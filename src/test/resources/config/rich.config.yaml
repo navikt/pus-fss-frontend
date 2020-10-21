@@ -1,0 +1,11 @@
+# CSP rules
+csp:
+  mode: ENFORCE
+  defaultSrc: "'self' url.no"
+  scriptSrc: "'self' 'unsafe-inline' 'unsafe-eval' url1.no *.url2.no"
+  imgSrc: "'self' url.no data:"
+  styleSrc: "'self' *.url.domain.no"
+  fontSrc: "'self' *.url.no"
+  connectSrc: "'self' www.url.no"
+  frameSrc: "www.url.no"
+  reportUri: "/frontendlogger/api/warn"

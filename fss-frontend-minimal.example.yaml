@@ -1,0 +1,8 @@
+# CSP rules
+csp:
+  mode: ENFORCE
+
+  # Default config if nothing else is specified.
+  # Browser will use `defaultSrc` as fallback for all other resource types when they don't have policies of their own
+  #defaultSrc: "'self'"
+  #reportUri: "/frontendlogger/api/warn"

@@ -4,7 +4,9 @@ import no.nav.common.featuretoggle.UnleashService;
 import no.nav.common.featuretoggle.UnleashServiceConfig;
 import no.nav.common.health.selftest.SelfTestChecks;
 import no.nav.common.health.selftest.SelfTestMeterBinder;
-import no.nav.common.rest.filter.SetStandardHttpHeadersFilter;
+import no.nav.common.rest.filter.HttpFilterHeaders;
+import no.nav.common.rest.filter.SetHeaderFilter;
+import no.nav.pus_fss_frontend.config.yaml.YamlConfig;
 import no.nav.pus_fss_frontend.filter.LoginRedirectFilter;
 import no.nav.pus_fss_frontend.utils.Utils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -16,18 +18,25 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.util.Optional.ofNullable;
 import static no.nav.common.utils.EnvironmentUtils.requireApplicationName;
+import static no.nav.pus_fss_frontend.config.yaml.YamlConfigResolver.resolveConfig;
 
 @Configuration
 @EnableConfigurationProperties({EnvironmentProperties.class})
 public class ApplicationConfig {
+    private final YamlConfig config = resolveConfig();
 
     @Bean
-    public FilterRegistrationBean<SetStandardHttpHeadersFilter> setStandardHttpHeadersFilter() {
-        FilterRegistrationBean<SetStandardHttpHeadersFilter> registration = new FilterRegistrationBean<>();
-        registration.setFilter(new SetStandardHttpHeadersFilter());
+    public FilterRegistrationBean<SetHeaderFilter> setStandardHttpHeadersFilter() {
+        Map<String, String> headers = new HashMap<>(HttpFilterHeaders.STANDARD_HEADERS);
+        config.csp.applyTo(headers);
+
+        FilterRegistrationBean<SetHeaderFilter> registration = new FilterRegistrationBean<>();
+        registration.setFilter(new SetHeaderFilter(headers));
         registration.setOrder(1);
         registration.addUrlPatterns("/*");
         return registration;
