@@ -1,4 +1,5 @@
 # CSP rules
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/default-src
 csp:
   # Default: NONE Values: ENFORCE, REPORT_ONLY or NONE
   mode: ENFORCE
@@ -7,12 +8,22 @@ csp:
 
   # Default: null
   # Browser will use `defaultSrc` as fallback for all other resource types when they don't have policies of their own
-  scriptSrc: "'self' 'unsafe-inline' url.no"
-  imgSrc: "'self' 'unsafe-inline' url.no"
-  styleSrc: "'self' 'unsafe-inline' url.no"
-  fontSrc: "'self' 'unsafe-inline' url.no"
+  childSrc: "'self' 'unsafe-inline' url.no"
   connectSrc: "'self' 'unsafe-inline' url.no"
+  fontSrc: "'self' 'unsafe-inline' url.no"
   frameSrc: "'self' 'unsafe-inline' url.no"
+  imgSrc: "'self' 'unsafe-inline' url.no"
+  manifestSrc: "'self' 'unsafe-inline' url.no"
+  mediaSrc: "'self' 'unsafe-inline' url.no"
+  objectSrc: "'self' 'unsafe-inline' url.no"
+  prefetchSrc: "'self' 'unsafe-inline' url.no"
+  scriptSrc: "'self' 'unsafe-inline' url.no"
+  scriptSrcElem: "'self' 'unsafe-inline' url.no"
+  scriptSrcAttr: "'self' 'unsafe-inline' url.no"
+  styleSrc: "'self' 'unsafe-inline' url.no"
+  styleSrcElem: "'self' 'unsafe-inline' url.no"
+  styleSrcAttr: "'self' 'unsafe-inline' url.no"
+  workerSrc: "'self' 'unsafe-inline' url.no"
 
   # Default: /frontendlogger/api/warn
   reportUri: "/frontendlogger/api/warn"

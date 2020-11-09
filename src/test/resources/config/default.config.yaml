@@ -2,10 +2,20 @@
 csp:
   mode: "NONE"
   defaultSrc: "'self'"
-  scriptSrc: null
-  imgSrc: null
-  styleSrc: null
-  fontSrc: null
+  childSrc: null
   connectSrc: null
+  fontSrc: null
   frameSrc: null
+  imgSrc: null
+  manifestSrc: null
+  mediaSrc: null
+  objectSrc: null
+  prefetchSrc: null
+  scriptSrc: null
+  scriptSrcElem: null
+  scriptSrcAttr: null
+  styleSrc: null
+  styleSrcElem: null
+  styleSrcAttr: null
+  workerSrc: null
   reportUri: "/frontendlogger/api/warn"

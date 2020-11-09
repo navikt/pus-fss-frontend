@@ -47,12 +47,21 @@ public class CspConfigTest {
         YamlConfig config = resolveConfig();
         assertThat(config.csp.generateCspHeader()).isEqualTo(""+
                 " default-src 'self' url.no;" +
-                " script-src 'self' 'unsafe-inline' 'unsafe-eval' url1.no *.url2.no;" +
-                " img-src 'self' url.no data:;" +
-                " style-src 'self' *.url.domain.no;" +
-                " font-src 'self' *.url.no;" +
+                " child-src url.no;" +
                 " connect-src 'self' www.url.no;" +
+                " font-src 'self' *.url.no;" +
                 " frame-src www.url.no;" +
+                " img-src 'self' url.no data:;" +
+                " manifest-src url.no;" +
+                " media-src url.no;" +
+                " object-src url.no;" +
+                " prefetch-src url.no;" +
+                " script-src 'self' 'unsafe-inline' 'unsafe-eval' url1.no *.url2.no;" +
+                " script-src-elem *.url2.no;" +
+                " script-src-attr 'none';" +
+                " style-src 'self' *.url.domain.no;" +
+                " style-src-elem *.url.domain.no;" +
+                " style-src-attr *.url.domain.no;" +
                 " report-uri /frontendlogger/api/warn;"
         );
     }
