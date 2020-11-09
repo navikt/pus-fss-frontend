@@ -10,12 +10,22 @@ import java.util.Map;
 public class CspConfig {
     public CspMode mode = CspMode.NONE;
     public String defaultSrc = "'self'";
-    public String scriptSrc;
-    public String imgSrc;
-    public String styleSrc;
-    public String fontSrc;
+    public String childSrc;
     public String connectSrc;
+    public String fontSrc;
     public String frameSrc;
+    public String imgSrc;
+    public String manifestSrc;
+    public String mediaSrc;
+    public String objectSrc;
+    public String prefetchSrc;
+    public String scriptSrc;
+    public String scriptSrcElem;
+    public String scriptSrcAttr;
+    public String styleSrc;
+    public String styleSrcElem;
+    public String styleSrcAttr;
+    public String workerSrc;
     public String reportUri = "/frontendlogger/api/warn";
 
 
@@ -28,12 +38,22 @@ public class CspConfig {
     String generateCspHeader() {
         StringBuilder builder = new StringBuilder();
         append(builder, "default-src", defaultSrc);
-        append(builder, "script-src", scriptSrc);
-        append(builder, "img-src", imgSrc);
-        append(builder, "style-src", styleSrc);
-        append(builder, "font-src", fontSrc);
+        append(builder, "child-src", childSrc);
         append(builder, "connect-src", connectSrc);
+        append(builder, "font-src", fontSrc);
         append(builder, "frame-src", frameSrc);
+        append(builder, "img-src", imgSrc);
+        append(builder, "manifest-src", manifestSrc);
+        append(builder, "media-src", mediaSrc);
+        append(builder, "object-src", objectSrc);
+        append(builder, "prefetch-src", prefetchSrc);
+        append(builder, "script-src", scriptSrc);
+        append(builder, "script-src-elem", scriptSrcElem);
+        append(builder, "script-src-attr", scriptSrcAttr);
+        append(builder, "style-src", styleSrc);
+        append(builder, "style-src-elem", styleSrcElem);
+        append(builder, "style-src-attr", styleSrcAttr);
+        append(builder, "worker-src", workerSrc);
         append(builder, "report-uri", reportUri);
         return builder.toString();
     }
