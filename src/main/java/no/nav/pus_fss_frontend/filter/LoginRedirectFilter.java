@@ -45,11 +45,13 @@ public class LoginRedirectFilter implements Filter {
         azureAdTokenFinder = new CookieTokenFinder(AZURE_AD_ID_TOKEN_COOKIE_NAME);
 
         openAmTokenValidator = new OidcTokenValidator(
-                environmentProperties.getOpenAmDiscoveryUrl(), List.of(environmentProperties.getOpenAmVeilarbloginClientId())
+                environmentProperties.getOpenAmDiscoveryUrl(),
+                environmentProperties.getOpenAmVeilarbloginClientId()
         );
 
         azureAdTokenValidator = new OidcTokenValidator(
-                environmentProperties.getAadDiscoveryUrl(), List.of(environmentProperties.getAadVeilarbloginClientId())
+                environmentProperties.getAadDiscoveryUrl(),
+                environmentProperties.getAadVeilarbloginClientId()
         );
     }
 
@@ -73,7 +75,10 @@ public class LoginRedirectFilter implements Filter {
 
             List<String> tokenAudiences = jwtToken.getJWTClaimsSet().getAudience();
 
-            boolean isOpenAmToken = tokenAudiences.contains(environmentProperties.getOpenAmVeilarbloginClientId());
+            boolean isOpenAmToken = environmentProperties
+                    .getOpenAmVeilarbloginClientId()
+                    .stream()
+                    .anyMatch(tokenAudiences::contains);
 
             if (isOpenAmToken) {
                 openAmTokenValidator.validate(jwtToken);
