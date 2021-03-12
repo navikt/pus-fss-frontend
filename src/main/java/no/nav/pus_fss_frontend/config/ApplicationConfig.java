@@ -6,6 +6,7 @@ import no.nav.common.health.selftest.SelfTestChecks;
 import no.nav.common.health.selftest.SelfTestMeterBinder;
 import no.nav.common.rest.filter.HttpFilterHeaders;
 import no.nav.common.rest.filter.SetHeaderFilter;
+import no.nav.pus_fss_frontend.config.yaml.IdTokenNames;
 import no.nav.pus_fss_frontend.config.yaml.YamlConfig;
 import no.nav.pus_fss_frontend.filter.LoginRedirectFilter;
 import no.nav.pus_fss_frontend.utils.Utils;
@@ -45,7 +46,7 @@ public class ApplicationConfig {
     @Bean
     public FilterRegistrationBean<LoginRedirectFilter> loginRedirectFilter(UnleashService unleashService, EnvironmentProperties environmentProperties) {
         FilterRegistrationBean<LoginRedirectFilter> registration = new FilterRegistrationBean<>();
-        registration.setFilter(new LoginRedirectFilter(unleashService, environmentProperties));
+        registration.setFilter(new LoginRedirectFilter(unleashService, environmentProperties, config.idTokenName));
         registration.setOrder(2);
         registration.addUrlPatterns("/*");
         return registration;
@@ -59,6 +60,11 @@ public class ApplicationConfig {
                 .unleashApiUrl(unleashUrl)
                 .build()
         );
+    }
+
+    @Bean
+    public IdTokenNames idTokenNames() {
+        return config.idTokenName;
     }
 
     @Bean

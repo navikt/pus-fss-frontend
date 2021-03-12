@@ -19,3 +19,6 @@ csp:
   styleSrcAttr: null
   workerSrc: null
   reportUri: "/frontendlogger/api/warn"
+idTokenName:
+  openAm: "ID_token"
+  azureAd: "isso-idtoken"

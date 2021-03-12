@@ -8,6 +8,7 @@ import no.nav.common.auth.utils.TokenFinder;
 import no.nav.common.auth.utils.TokenUtils;
 import no.nav.common.featuretoggle.UnleashService;
 import no.nav.pus_fss_frontend.config.EnvironmentProperties;
+import no.nav.pus_fss_frontend.config.yaml.IdTokenNames;
 import no.nav.pus_fss_frontend.utils.ToggleUtils;
 import no.nav.pus_fss_frontend.utils.Utils;
 
@@ -17,9 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-
-import static no.nav.common.auth.Constants.AZURE_AD_ID_TOKEN_COOKIE_NAME;
-import static no.nav.common.auth.Constants.OPEN_AM_ID_TOKEN_COOKIE_NAME;
 
 public class LoginRedirectFilter implements Filter {
 
@@ -37,12 +35,12 @@ public class LoginRedirectFilter implements Filter {
 
     private final OidcTokenValidator azureAdTokenValidator;
 
-    public LoginRedirectFilter(UnleashService unleashService, EnvironmentProperties environmentProperties) {
+    public LoginRedirectFilter(UnleashService unleashService, EnvironmentProperties environmentProperties, IdTokenNames cookieConfig) {
         this.unleashService = unleashService;
         this.environmentProperties = environmentProperties;
 
-        openAmTokenFinder = new CookieTokenFinder(OPEN_AM_ID_TOKEN_COOKIE_NAME);
-        azureAdTokenFinder = new CookieTokenFinder(AZURE_AD_ID_TOKEN_COOKIE_NAME);
+        openAmTokenFinder = new CookieTokenFinder(cookieConfig.openAm);
+        azureAdTokenFinder = new CookieTokenFinder(cookieConfig.azureAd);
 
         openAmTokenValidator = new OidcTokenValidator(
                 environmentProperties.getOpenAmDiscoveryUrl(),

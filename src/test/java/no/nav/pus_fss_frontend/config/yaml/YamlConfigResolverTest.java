@@ -20,13 +20,9 @@ public class YamlConfigResolverTest {
     @Test
     public void emptyConfig() {
         YamlConfig config = resolveConfig();
-        assertThat(config).isEqualTo(new YamlConfig()
-                .setCsp(new CspConfig()
-                        .setMode(CspMode.NONE)
-                        .setReportUri("/frontendlogger/api/warn")
-                )
-        );
-        assertThat(YamlUtils.toYaml(config)).isEqualTo(readResource("/config/default.config.yaml"));
+        assertThat(config).isEqualTo(new YamlConfig());
+        assertThat(YamlUtils.toYaml(config).trim())
+                .isEqualTo(readResource("/config/default.config.yaml").trim());
     }
 
     @Test
@@ -81,6 +77,10 @@ public class YamlConfigResolverTest {
                         .setObjectSrc("url.no")
                         .setPrefetchSrc("url.no")
                         .setReportUri("/frontendlogger/api/warn")
+                )
+                .setIdTokenName(new IdTokenNames()
+                        .setOpenAm("CUSTOM_ID_TOKEN")
+                        .setAzureAd("CUSTOM_AAD_TOKEN")
                 )
         );
     }
