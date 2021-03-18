@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import no.finn.unleash.UnleashContext;
 import no.nav.common.auth.utils.CookieUtils;
 import no.nav.common.featuretoggle.UnleashService;
+import no.nav.pus_fss_frontend.config.yaml.IdTokenNames;
 import no.nav.pus_fss_frontend.utils.ToggleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +22,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static no.nav.common.auth.Constants.AZURE_AD_ID_TOKEN_COOKIE_NAME;
-import static no.nav.common.auth.Constants.OPEN_AM_ID_TOKEN_COOKIE_NAME;
-
 /**
  * Implements equal api as https://github.com/navikt/pus-decorator/blob/master/src/main/java/no/nav/pus/decorator/feature/FeatureResource.java
  */
@@ -35,10 +33,12 @@ public class FeatureController {
     private static final String UNLEASH_SESSION_ID_COOKIE_NAME = "UNLEASH_SESSION_ID";
 
     private final UnleashService unleashService;
+    private final IdTokenNames idTokenNames;
 
     @Autowired
-    public FeatureController(UnleashService unleashService) {
+    public FeatureController(UnleashService unleashService, IdTokenNames idTokenNames) {
         this.unleashService = unleashService;
+        this.idTokenNames = idTokenNames;
     }
 
     @GetMapping
@@ -49,8 +49,8 @@ public class FeatureController {
     ) {
 
         String tokenCookieName = ToggleUtils.skalBrukeAzureAd(unleashService)
-                ? AZURE_AD_ID_TOKEN_COOKIE_NAME
-                : OPEN_AM_ID_TOKEN_COOKIE_NAME;
+                ? idTokenNames.azureAd
+                : idTokenNames.openAm;
 
         String oidcToken = CookieUtils.getCookie(tokenCookieName, request)
                 .map((cookie) -> getSubject(cookie.getValue()))

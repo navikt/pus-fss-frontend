@@ -7,4 +7,5 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class YamlConfig {
     public CspConfig csp = new CspConfig();
+    public IdTokenNames idTokenName = new IdTokenNames();
 }
