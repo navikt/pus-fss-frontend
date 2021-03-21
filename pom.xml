@@ -18,7 +18,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <common.version>2.2020.08.28_14.16-420d1471cb04</common.version>
+        <common.version>2.2020.09.11_15.16-c3ee7d09b4c8</common.version>
     </properties>
 
     <build>
