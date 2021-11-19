@@ -1,8 +1,6 @@
 package no.nav.pus_fss_frontend.config.yaml;
 
 
-import no.nav.common.test.junit.SystemPropertiesRule;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -12,8 +10,6 @@ import static no.nav.pus_fss_frontend.config.yaml.YamlConfigResolver.resolveConf
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CspConfigTest {
-    @Rule
-    public SystemPropertiesRule systemPropertiesRule = new SystemPropertiesRule();
 
     @Test
     public void dontAddHeaderIfDisabled() {
@@ -40,8 +36,10 @@ public class CspConfigTest {
 
     @Test
     public void generateCspHeader() {
-        systemPropertiesRule.setProperty(CONFIGURATION_LOCATION_PROPERTY, YamlConfigResolverTest.class.getResource("/config/rich.config.yaml").getFile());
+        System.setProperty(CONFIGURATION_LOCATION_PROPERTY, YamlConfigResolverTest.class.getResource("/config/rich.config.yaml").getFile());
+
         YamlConfig config = resolveConfig();
+
         assertThat(config.csp.generateCspHeader()).isEqualTo(""+
                 " default-src 'self' url.no;" +
                 " child-src url.no;" +
@@ -61,6 +59,8 @@ public class CspConfigTest {
                 " style-src-attr *.url.domain.no;" +
                 " report-uri /frontendlogger/api/warn;"
         );
+
+        System.clearProperty(CONFIGURATION_LOCATION_PROPERTY);
     }
 
 }
