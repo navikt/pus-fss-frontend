@@ -1,13 +1,10 @@
 package no.nav.pus_fss_frontend.config.yaml;
 
 
-import lombok.SneakyThrows;
 import no.nav.common.test.junit.SystemPropertiesRule;
-import org.apache.commons.io.IOUtils;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.io.InputStream;
 import java.util.HashMap;
 
 import static no.nav.pus_fss_frontend.config.yaml.YamlConfigResolver.CONFIGURATION_LOCATION_PROPERTY;
@@ -28,7 +25,7 @@ public class CspConfigTest {
     }
 
     @Test
-    public void addHeaderIfEabled() {
+    public void addHeaderIfEnabled() {
         HashMap<String, String> headers = new HashMap<>();
         CspConfig config = new CspConfig()
                 .setMode(CspMode.ENFORCE);
@@ -66,9 +63,4 @@ public class CspConfigTest {
         );
     }
 
-    @SneakyThrows
-    private String readResource(String name) {
-        InputStream resourceAsStream = YamlConfigResolverTest.class.getResourceAsStream(name);
-        return IOUtils.toString(resourceAsStream, "UTF-8");
-    }
 }
