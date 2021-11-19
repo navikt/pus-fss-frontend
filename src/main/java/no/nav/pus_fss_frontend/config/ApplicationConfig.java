@@ -36,6 +36,9 @@ public class ApplicationConfig {
         Map<String, String> headers = new HashMap<>(HttpFilterHeaders.STANDARD_HEADERS);
         config.csp.applyTo(headers);
 
+        // Add referrer-policy so we dont leak sensitive information (FNR in URL) through links
+        headers.put("Referrer-Policy", "origin");
+
         FilterRegistrationBean<SetHeaderFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(new SetHeaderFilter(headers));
         registration.setOrder(1);
