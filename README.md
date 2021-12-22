@@ -43,5 +43,3 @@ Dette gjøres av applikasjoner, og krever derfor at miljøvariablene er tilgjeng
 
 For å bruke via docker trenger man bare å legge til følgende; 
 ```ADD config.yaml /config.yaml```
-
-
