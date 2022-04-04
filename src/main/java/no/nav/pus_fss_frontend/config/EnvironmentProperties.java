@@ -27,7 +27,7 @@ public class EnvironmentProperties {
     private String aadVeilarbloginLoginUrl;
 
 
-    private String unleashApiUrl;
+    private String unleashUrl;
 
     private String naisAppName;
 

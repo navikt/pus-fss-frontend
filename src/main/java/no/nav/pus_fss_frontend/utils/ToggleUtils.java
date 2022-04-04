@@ -1,6 +1,6 @@
 package no.nav.pus_fss_frontend.utils;
 
-import no.nav.common.featuretoggle.UnleashService;
+import no.nav.pus_fss_frontend.service.UnleashService;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class ToggleUtils {
 
     private static final List<String> MODIA_APPS = List.of("modiapersonoversikt", "modiaflatefs");
 
-    public static boolean skalBrukeAzureAd(UnleashService unleashService) {
+    public static boolean skalBrukeAzureAd() {
         boolean erModiaApp = MODIA_APPS.contains(requireApplicationName());
         String toggleName = erModiaApp ? MODIA_USE_AZURE_AD_TOGGLE : PTO_USE_AZURE_AD_TOGGLE;
 
