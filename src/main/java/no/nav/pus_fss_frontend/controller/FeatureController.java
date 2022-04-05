@@ -22,6 +22,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static no.nav.common.auth.Constants.AAD_NAV_IDENT_CLAIM;
+import static no.nav.common.auth.Constants.AZURE_AD_ID_TOKEN_COOKIE_NAME;
 import static no.nav.common.auth.Constants.OPEN_AM_ID_TOKEN_COOKIE_NAME;
 
 /**
@@ -67,7 +68,7 @@ public class FeatureController {
     // AAD_NAV_IDENT_CLAIM er et custom claim for NAV ident, brukes i V1 av Azure AD. Skal ikke brukes i V2.
     private static Optional<String> getV1AzureIdent(HttpServletRequest request) {
         try {
-            return CookieUtils.getCookie(AAD_NAV_IDENT_CLAIM, request)
+            return CookieUtils.getCookie(AZURE_AD_ID_TOKEN_COOKIE_NAME, request)
                     .map((cookie) -> getSubject(cookie.getValue(), AAD_NAV_IDENT_CLAIM));
         } catch (Exception e) {
             return Optional.empty();
