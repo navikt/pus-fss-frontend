@@ -31,7 +31,6 @@ import static no.nav.pus_fss_frontend.config.yaml.YamlConfigResolver.resolveConf
 @EnableConfigurationProperties({EnvironmentProperties.class})
 public class ApplicationConfig {
 
-    public final static String APPLICATION_NAME = "pus-fss-frontend";
     private final YamlConfig config = resolveConfig();
 
     @Bean
@@ -61,7 +60,7 @@ public class ApplicationConfig {
     @Bean
     public UnleashClient unleashClient(EnvironmentProperties properties) {
         String unleashUrl = ofNullable(properties.getUnleashApiUrl()).orElse("https://unleash.nais.adeo.no/api/");
-        return new UnleashClientImpl(unleashUrl, APPLICATION_NAME);
+        return new UnleashClientImpl(unleashUrl, requireApplicationName());
     }
 
     @Bean
