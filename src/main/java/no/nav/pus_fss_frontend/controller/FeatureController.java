@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -46,14 +47,9 @@ public class FeatureController {
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        String userId = CookieUtils.getCookie(AAD_NAV_IDENT_CLAIM, request)
-                .map((cookie) -> getSubject(cookie.getValue(), "NAVident"))
-                .orElse(
-                        CookieUtils.getCookie(OPEN_AM_ID_TOKEN_COOKIE_NAME, request)
-                                .map((cookie) -> getSubject(cookie.getValue(), "sub"))
-                                .orElse("")
-                );
-
+        String userId = getV1AzureIdent(request)
+                .or(() -> getOpenAmSub(request))
+                .orElse("");
 
         String sessionId = CookieUtils.getCookie(UNLEASH_SESSION_ID_COOKIE_NAME, request)
                 .map(Cookie::getValue)
@@ -66,6 +62,25 @@ public class FeatureController {
                 .build();
 
         return features.stream().collect(Collectors.toMap(e -> e, e -> unleashService.isEnabled(e, unleashContext)));
+    }
+
+    // AAD_NAV_IDENT_CLAIM er et custom claim for NAV ident, brukes i V1 av Azure AD. Skal ikke brukes i V2.
+    private static Optional<String> getV1AzureIdent(HttpServletRequest request) {
+        try {
+            return CookieUtils.getCookie(AAD_NAV_IDENT_CLAIM, request)
+                    .map((cookie) -> getSubject(cookie.getValue(), AAD_NAV_IDENT_CLAIM));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
+    private static Optional<String> getOpenAmSub(HttpServletRequest request) {
+        try {
+            return CookieUtils.getCookie(OPEN_AM_ID_TOKEN_COOKIE_NAME, request)
+                    .map((cookie) -> getSubject(cookie.getValue(), "sub"));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 
     private static String getSubject(String jwt, String claim) {
