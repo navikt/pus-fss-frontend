@@ -14,7 +14,7 @@ public class ToggleUtils {
 
     private static final List<String> MODIA_APPS = List.of("modiapersonoversikt", "modiaflatefs");
 
-    public static boolean skalBrukeAzureAd() {
+    public static boolean skalBrukeAzureAd(UnleashService unleashService) {
         boolean erModiaApp = MODIA_APPS.contains(requireApplicationName());
         String toggleName = erModiaApp ? MODIA_USE_AZURE_AD_TOGGLE : PTO_USE_AZURE_AD_TOGGLE;
 

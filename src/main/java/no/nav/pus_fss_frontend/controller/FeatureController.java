@@ -48,7 +48,7 @@ public class FeatureController {
             HttpServletResponse response
     ) {
 
-        String tokenCookieName = ToggleUtils.skalBrukeAzureAd()
+        String tokenCookieName = ToggleUtils.skalBrukeAzureAd(unleashService)
                 ? idTokenNames.azureAd
                 : idTokenNames.openAm;
 

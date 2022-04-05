@@ -7,9 +7,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UnleashService {
-
-    private static final String VEILARBVEDTAKSSTOTTE_DOK_DIST_SCHEDULE_ENABLED_TOGGLE = "veilarbvedtaksstotte.dok_dist_schedule_enabled";
-
     private final UnleashClient unleashClient;
 
     @Autowired
@@ -17,10 +14,11 @@ public class UnleashService {
         this.unleashClient = unleashClient;
     }
 
-    public boolean isEnabled() {
-        return unleashClient.isEnabled(VEILARBVEDTAKSSTOTTE_DOK_DIST_SCHEDULE_ENABLED_TOGGLE);
+    public boolean isEnabled(String toggleName) {
+        return unleashClient.isEnabled(toggleName);
     }
 
-    public Object isEnabled(String e, UnleashContext unleashContext) {
+    public boolean isEnabled(String toggleName, UnleashContext unleashContext) {
+        return unleashClient.isEnabled(toggleName, unleashContext);
     }
 }

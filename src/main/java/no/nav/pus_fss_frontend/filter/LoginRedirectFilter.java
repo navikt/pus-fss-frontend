@@ -101,7 +101,7 @@ public class LoginRedirectFilter implements Filter {
     private void redirectToLogin(HttpServletResponse response, String encodedReturnUrl) throws IOException {
         String loginUrl;
 
-        if (ToggleUtils.skalBrukeAzureAd()) {
+        if (ToggleUtils.skalBrukeAzureAd(unleashService)) {
             loginUrl = environmentProperties.getAadVeilarbloginLoginUrl() + "?returnUrl=" + encodedReturnUrl;
         } else {
             loginUrl = environmentProperties.getOpenAmVeilarbloginLoginUrl() + "?url=" + encodedReturnUrl;

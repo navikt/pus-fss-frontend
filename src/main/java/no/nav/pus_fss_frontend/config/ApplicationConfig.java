@@ -60,7 +60,8 @@ public class ApplicationConfig {
 
     @Bean
     public UnleashClient unleashClient(EnvironmentProperties properties) {
-        return new UnleashClientImpl(properties.getUnleashUrl(), APPLICATION_NAME);
+        String unleashUrl = ofNullable(properties.getUnleashApiUrl()).orElse("https://unleash.nais.adeo.no/api/");
+        return new UnleashClientImpl(unleashUrl, APPLICATION_NAME);
     }
 
     @Bean
