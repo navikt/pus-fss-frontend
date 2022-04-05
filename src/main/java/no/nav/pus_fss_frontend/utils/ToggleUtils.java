@@ -1,6 +1,6 @@
 package no.nav.pus_fss_frontend.utils;
 
-import no.nav.common.featuretoggle.UnleashService;
+import no.nav.pus_fss_frontend.service.UnleashService;
 
 import java.util.List;
 

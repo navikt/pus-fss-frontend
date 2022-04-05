@@ -6,11 +6,11 @@ import no.nav.common.auth.oidc.OidcTokenValidator;
 import no.nav.common.auth.utils.CookieTokenFinder;
 import no.nav.common.auth.utils.TokenFinder;
 import no.nav.common.auth.utils.TokenUtils;
-import no.nav.common.featuretoggle.UnleashService;
 import no.nav.pus_fss_frontend.config.EnvironmentProperties;
 import no.nav.pus_fss_frontend.config.yaml.IdTokenNames;
 import no.nav.pus_fss_frontend.utils.ToggleUtils;
 import no.nav.pus_fss_frontend.utils.Utils;
+import no.nav.pus_fss_frontend.service.UnleashService;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

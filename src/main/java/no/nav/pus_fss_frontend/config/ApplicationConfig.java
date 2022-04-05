@@ -1,7 +1,7 @@
 package no.nav.pus_fss_frontend.config;
 
-import no.nav.common.featuretoggle.UnleashService;
-import no.nav.common.featuretoggle.UnleashServiceConfig;
+import no.nav.common.featuretoggle.UnleashClient;
+import no.nav.common.featuretoggle.UnleashClientImpl;
 import no.nav.common.health.selftest.SelfTestChecks;
 import no.nav.common.health.selftest.SelfTestMeterBinder;
 import no.nav.common.rest.filter.HttpFilterHeaders;
@@ -10,6 +10,7 @@ import no.nav.pus_fss_frontend.config.yaml.IdTokenNames;
 import no.nav.pus_fss_frontend.config.yaml.YamlConfig;
 import no.nav.pus_fss_frontend.filter.LoginRedirectFilter;
 import no.nav.pus_fss_frontend.utils.Utils;
+import no.nav.pus_fss_frontend.service.UnleashService;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -29,6 +30,7 @@ import static no.nav.pus_fss_frontend.config.yaml.YamlConfigResolver.resolveConf
 @Configuration
 @EnableConfigurationProperties({EnvironmentProperties.class})
 public class ApplicationConfig {
+
     private final YamlConfig config = resolveConfig();
 
     @Bean
@@ -56,13 +58,9 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public UnleashService unleashService(EnvironmentProperties environmentProperties) {
-        String unleashUrl = ofNullable(environmentProperties.getUnleashApiUrl()).orElse("https://unleash.nais.adeo.no/api/");
-        return new UnleashService(UnleashServiceConfig.builder()
-                .applicationName(requireApplicationName())
-                .unleashApiUrl(unleashUrl)
-                .build()
-        );
+    public UnleashClient unleashClient(EnvironmentProperties properties) {
+        String unleashUrl = ofNullable(properties.getUnleashApiUrl()).orElse("https://unleash.nais.adeo.no/api/");
+        return new UnleashClientImpl(unleashUrl, requireApplicationName());
     }
 
     @Bean

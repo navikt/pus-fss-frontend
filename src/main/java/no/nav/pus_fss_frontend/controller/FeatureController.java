@@ -4,7 +4,7 @@ import com.nimbusds.jwt.JWTParser;
 import lombok.extern.slf4j.Slf4j;
 import no.finn.unleash.UnleashContext;
 import no.nav.common.auth.utils.CookieUtils;
-import no.nav.common.featuretoggle.UnleashService;
+import no.nav.pus_fss_frontend.service.UnleashService;
 import no.nav.pus_fss_frontend.config.yaml.IdTokenNames;
 import no.nav.pus_fss_frontend.utils.ToggleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
