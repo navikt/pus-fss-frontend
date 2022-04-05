@@ -1,12 +1,11 @@
 package no.nav.pus_fss_frontend.controller;
 
-import com.nimbusds.jwt.JWTParser;
 import lombok.extern.slf4j.Slf4j;
 import no.finn.unleash.UnleashContext;
+import no.nav.common.auth.context.AuthContextHolderThreadLocal;
 import no.nav.common.auth.utils.CookieUtils;
+import no.nav.common.types.identer.NavIdent;
 import no.nav.pus_fss_frontend.service.UnleashService;
-import no.nav.pus_fss_frontend.config.yaml.IdTokenNames;
-import no.nav.pus_fss_frontend.utils.ToggleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -33,12 +31,10 @@ public class FeatureController {
     private static final String UNLEASH_SESSION_ID_COOKIE_NAME = "UNLEASH_SESSION_ID";
 
     private final UnleashService unleashService;
-    private final IdTokenNames idTokenNames;
 
     @Autowired
-    public FeatureController(UnleashService unleashService, IdTokenNames idTokenNames) {
+    public FeatureController(UnleashService unleashService) {
         this.unleashService = unleashService;
-        this.idTokenNames = idTokenNames;
     }
 
     @GetMapping
@@ -47,21 +43,14 @@ public class FeatureController {
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-
-        String tokenCookieName = ToggleUtils.skalBrukeAzureAd(unleashService)
-                ? idTokenNames.azureAd
-                : idTokenNames.openAm;
-
-        String oidcToken = CookieUtils.getCookie(tokenCookieName, request)
-                .map((cookie) -> getSubject(cookie.getValue()))
-                .orElse(null);
+        String userId = getInnloggetVeilederIdent();
 
         String sessionId = CookieUtils.getCookie(UNLEASH_SESSION_ID_COOKIE_NAME, request)
                 .map(Cookie::getValue)
                 .orElseGet(() -> generateSessionId(response));
 
         UnleashContext unleashContext = UnleashContext.builder()
-                .userId(oidcToken)
+                .userId(userId)
                 .sessionId(sessionId)
                 .remoteAddress(request.getRemoteAddr())
                 .build();
@@ -69,13 +58,12 @@ public class FeatureController {
         return features.stream().collect(Collectors.toMap(e -> e, e -> unleashService.isEnabled(e, unleashContext)));
     }
 
-    private static String getSubject(String jwt) {
-        try {
-            return JWTParser.parse(jwt).getJWTClaimsSet().getSubject();
-        } catch (ParseException e) {
-            log.warn(e.getMessage(), e);
-            return null;
-        }
+    public static String getInnloggetVeilederIdent() {
+        return AuthContextHolderThreadLocal
+                .instance()
+                .getNavIdent()
+                .map(NavIdent::toString)
+                .orElse("");
     }
 
     private String generateSessionId(HttpServletResponse httpServletRequest) {
